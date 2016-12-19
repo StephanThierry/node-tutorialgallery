@@ -6,6 +6,7 @@
   "dependencies": {
     "cors": "^2.8.1",
     "express": "^4.14.0",
+    "fs": "0.0.1-security",
     "path": "^0.12.7",
     "rs": "^0.0.2"
   },
