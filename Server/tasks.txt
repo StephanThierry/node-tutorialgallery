@@ -1,0 +1,5 @@
+Task
+
+Implement the use of Image resizing.
+	Use for example:
+	https://www.npmjs.com/package/jimp
