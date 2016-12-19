@@ -1,4 +1,5 @@
-git add// To install use "npm install express --save"
+// To install use "npm install express --save"
+// To start use "node galleryServer.js"
 var express = require("express");
 var app = express();
 
