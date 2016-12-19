@@ -1,4 +1,4 @@
-// To install use "npm install express --save"
+git add// To install use "npm install express --save"
 var express = require("express");
 var app = express();
 
@@ -8,9 +8,9 @@ app.use(cors());
 var fs = require('fs');
 var path = require('path');
 
-const galleryFoleder = "galleries";
+const galleryFolder = "galleries";
 const clientFolder = "../client";
-app.use("/" + galleryFoleder, express.static(galleryFoleder))
+app.use("/" + galleryFolder, express.static(galleryFolder))
 app.use(express.static(clientFolder))
 
 app.get("/galleryindex", function (req, res) {
@@ -26,14 +26,14 @@ app.get("/gallery", function (req, res) {
 
 // Returnerer et Array af strings der indeholder de mapper der ligger under mappen "galleries"
 function getGalleries() {
-  var srcpath = galleryFoleder;
+  var srcpath = galleryFolder;
   return fs.readdirSync(srcpath).filter(function(file) {
     return fs.statSync(path.join(srcpath, file)).isDirectory();
   });
 }
 
 function getGallery(index) {
-  var srcpath = galleryFoleder + "/" + getGalleries()[index];
+  var srcpath = galleryFolder + "/" + getGalleries()[index];
   return fs.readdirSync(srcpath).filter(function(file) {
     return fs.statSync(path.join(srcpath, file)).isFile();
   });
