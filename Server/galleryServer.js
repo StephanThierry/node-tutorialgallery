@@ -59,7 +59,7 @@ var path = require('path');
   running in the "Server" folder.
   It's accessed using: settings.galleryFolder
 
-  clientFoldercontains the path to the Client files. It's possible to serve the
+  clientFolder contains the path to the Client files. It's possible to serve the
   clientfiles via a different webserver but since Express does this very easily
   it's not nessecary. However, if for some reason the Client port can't be mapped
   to port 80, another webserver should be used.
