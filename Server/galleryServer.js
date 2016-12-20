@@ -118,40 +118,40 @@ app.use("/" + settings.galleryFolder, express.static(settings.galleryFolder))
  So for example then you type "http://google.com" your browser makes a
  GET-request to google.com.
 
- POST-reqests are used when entering login information and hitting a "Login"
- button. Since that requires data from the cliet to the server it's usually
- done with a POST request.
+ POST-reqests are used, for example, when entering login information and hitting
+ the "Login" button. Since that requires data from the client to the server it's
+ usually done with a POST request. Other examples of POST request are uploading
+ files, filling out forms and so on.
 
- The first paramenter is a string "/galleryindex" means: what route should this
- code handle the request to. So the route combined with the HTTP verb gives us:
- "When a user makes a simple request to "http://localhost:3000/galleryindex"
- execute the following code."
+ The first paramenter in the call is a string "/galleryindex". This means "what
+ route should this code handle the request to." So the route combined with the
+ HTTP verb gives us the whole picture: "When a user makes a simple request
+ to "http://localhost:3000/galleryindex" execute the following code."
 
  The second parameter is a function that takes 2 parameters (request, response).
- In this implementation an anonymous is used "function (req, res)" as we don't
- need any information from the request the "req" paramenter (variable) is not
- user.
+ In this implementation an anonymous function is used "function (req, res)" as
+ we don't need any information from the request the "req" paramenter (variable)
+ is not used.
 
  The "res" (response) paramenter/vaiable is used to send the response we want
- the client to recieve using the function res.send()
+ the client. For this we use the function send() on the res-object. So res.send();
 
  In this case we send the string Array af galliers contained in galleryIndex
  to the client. The resulting output is: ["Backgrounds","Clipart"]
 
  The [] signifies that it's an Array, and inside the Array each string is
  surrounded with "".
-
-
  */
 app.get("/galleryindex", function (req, res) {
-    // Define a variable galleryIndex. Take the output of the function getGalleries()
-    // and assign it to the vaiable. The function returns an Array of strings
-    // that represents all avaiable galleries - meaning all folders in the galleryFolder
+    // Define a variable galleryIndex. Take the output of the function
+    // getGalleries() and assign it to the vaiable. The function returns an
+    // Array of strings that contains all avaiable galleries - meaning all
+    // folder names inside the galleryFolder ("galleries")
     var galleryIndex = getGalleries();
 
-    // The res.send() function takes one paramenter is used to send the output
-    // to the client. Look in the Client-code /Client/js/scripts.js on how to
-    // process this data.
+    // The res.send() function takes one paramenter. We used it to send the output
+    // to the client. Look in the Client-code /Client/js/scripts.js on how the
+    // data is processed.
     res.send(galleryIndex);
 });
 
@@ -163,9 +163,18 @@ app.get("/gallery", function (req, res) {
 /*
   In this case we use the "req" variable to get the value of the QueryString
   paramenter "id". For example "http://localhost:3000/gallery?id=1"
-  in this case the variable id would be "1" we use the built-in function
-  parseInt() to convert the string "1" to the number 1.
-*/
+  in this case the variable id would be the string "1". We use the built-in
+  function parseInt() to convert the string "1" to the number 1.
+
+  To "parse" something means to analyse that is confides to a particular
+  syntax or gramma - and usually to then translate it to some other form. The
+  translation always relies on the parsing to have been successful. In this
+  case the string must be a number for the parsing to be successful. Any invalid
+  input would result in id becoming the JavaScript constant "NaN" (Not A Number).
+
+  But since no end-user will be calling this endpoint, we assume "id" is always
+  a valid number.
+  */
   var id = parseInt(req.query.id);
 
 /*
