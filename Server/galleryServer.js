@@ -6,9 +6,9 @@
 var express = require("express");
 
 /*
- Start the Express constructor method my calling express()
- Store the resulting instance in the variable app
- from this point all Express functions can be called using "app.functionname()"
+ Start the Express constructor function my calling express()
+ Store the resulting instance in the variable app.
+ From this point all Express functions can be called using "app.somefunctionname()"
 */
 var app = express();
 
@@ -25,7 +25,11 @@ var cors = require('cors')
 
 /*
   Here we call the "use" function on the instance of Express (stored in the
-  variable app) to enable Express to use the cors middleware from here on.
+  variable app) this makes Express use the cors module. Modules that add
+  functionality to Express is called "middleware".
+
+  If you are accessing the server from the same domain, you can comment out
+  this line using //. This goes for the "require('cors')" statement.
 */
 app.use(cors());
 
@@ -45,25 +49,32 @@ var fs = require('fs');
 var path = require('path');
 
 /*
- "const" is a constant it behaves the same as "var" except the value can't
-  be changed while the program is running. We may as well have used "var" but
-  using "const" we explain that the value should be set once and not be changed
-  The constant galleryFolder is used to store the name of the folder that contains
+ "const" is a constant. It behaves the same as "var" except the value can't
+  be changed while the program is running. We may as well have used "var" but by
+  using "const" we explain that the value should be set once and not be changed.
+  The constant settings is an object that contains 2 values.
+
+  galleryFolder is used to store the name of the folder that contains
   all galleries. Meaning in this case "Server/galleries" since the server is
-  running in the "Server" folder
-*/
-const galleryFolder = "galleries";
+  running in the "Server" folder.
+  It's accessed using: settings.galleryFolder
 
-/*
- This variable contains the path to the Client files. It's possible to serve the
- clientfiles via a different webserver but since Express does this very easily
- it's not nessecary. However, if for some reason the Client port can't be mapped
- to port 80 using another webserver should be used.
+  clientFoldercontains the path to the Client files. It's possible to serve the
+  clientfiles via a different webserver but since Express does this very easily
+  it's not nessecary. However, if for some reason the Client port can't be mapped
+  to port 80, another webserver should be used.
 
- The starting "../" means "Go back one level" - since the server is running
- inside the /Server folder, we need to go back one level to access "Client"
+  If a custom port is used the person using the website is required to specify
+  that port in the URL like so: "http://mydomain.com:3000" (if the port number
+  being used is 3000) but since port 80 is default it's not required, leaving
+  the website with a more userfriendly URL "http://mydomain.com"
+
+  The starting "../" in the clientFolder string means "Go back (up) one level in
+  the folder structure". Since the server is running inside the /Server folder,
+  we need to go up one level to access "Client"
 */
-const clientFolder = "../Client";
+const settings = { galleryFolder : "galleries",
+                  clientFolder : "../Client"};
 
 /*
  This line calls express.static as Express middleware and takes clientFolder
@@ -72,40 +83,110 @@ const clientFolder = "../Client";
  parameters, Express assumes "/" (root). So the content of clientFolder is
  available from the root. For example. "http://localhost:3000/index.html"
 */
-app.use(express.static(clientFolder))
+app.use(express.static(settings.clientFolder))
 
 /*
  Here we are making the same call to app.use() and passing express.static() as
- a parameter. But in this case we also send in a string "/" +galleryFolder.
- resulting in "/galleries". This means we expose the galleryFolder
- "galleries" meaning "./Server/galleries" (since we are already inside the
- "Server" folder). When we include the string "/galleries" the serverfolder
- is the exposed on that serverpath meaning "http://localhost:3000/galleries"
+ a parameter. But in this case we also send in a string:
+ "/" + settings.galleryFolder. Resulting in "/galleries". This means we expose
+ the galleryFolder "galleries" meaning "./Server/galleries" (since we are already
+ inside the "Server" folder). When we include the string "/galleries" the
+ serverfolder is then exposed on that server route meaning:
+ "http://localhost:3000/galleries"
+
+ Route and path are two sides of the same concept. In this context
+ Path refers to a path in the physical filestructure: "c:\myfile\mydocs" and
+ route defines a web-route "http://domain.com/route"
+
+ This statement is the bridge between the two. Between a physical filestructure
+ path and its web-route. In this case both are the same, therefore the
+ settings.galleryFolder value is used i both cases, but it would be easy to change
+ them independently. If we wanted to give the local filestructure folder
+ "/Server/galleries" a web-route: "/pictures" (http://domain.com/pictures).
+ Simply change the statement below to:
+ app.use("/pictures", express.static(settings.galleryFolder))
 */
-app.use("/" + galleryFolder, express.static(galleryFolder))
+app.use("/" + settings.galleryFolder, express.static(settings.galleryFolder))
+
+/*
+ Here we call app.get() "GET" is the name of a request-type that contains no
+ data. This type of request-type name is called a "HTTP verb". There are a
+ number of different HTTP verbs, but the main ones are "GET" and "POST".
+ GET is a simple page request, and POST is when the user sends data back
+ to the server.
+
+ So for example then you type "http://google.com" your browser makes a
+ GET-request to google.com.
+
+ POST-reqests are used when entering login information and hitting a "Login"
+ button. Since that requires data from the cliet to the server it's usually
+ done with a POST request.
+
+ The first paramenter is a string "/galleryindex" means: what route should this
+ code handle the request to. So the route combined with the HTTP verb gives us:
+ "When a user makes a simple request to "http://localhost:3000/galleryindex"
+ execute the following code."
+
+ The second parameter is a function that takes 2 parameters (request, response).
+ In this implementation an anonymous is used "function (req, res)" as we don't
+ need any information from the request the "req" paramenter (variable) is not
+ user.
+
+ The "res" (response) paramenter/vaiable is used to send the response we want
+ the client to recieve using the function res.send()
+
+ In this case we send the string Array af galliers contained in galleryIndex
+ to the client. The resulting output is: ["Backgrounds","Clipart"]
+
+ The [] signifies that it's an Array, and inside the Array each string is
+ surrounded with "".
 
 
+ */
 app.get("/galleryindex", function (req, res) {
+    // Define a variable galleryIndex. Take the output of the function getGalleries()
+    // and assign it to the vaiable. The function returns an Array of strings
+    // that represents all avaiable galleries - meaning all folders in the galleryFolder
     var galleryIndex = getGalleries();
 
+    // The res.send() function takes one paramenter is used to send the output
+    // to the client. Look in the Client-code /Client/js/scripts.js on how to
+    // process this data.
     res.send(galleryIndex);
 });
 
+/*
+ We specify whan happens when a GET request is made to
+ "http://localhost:3000/gallery".
+*/
 app.get("/gallery", function (req, res) {
+/*
+  In this case we use the "req" variable to get the value of the QueryString
+  paramenter "id". For example "http://localhost:3000/gallery?id=1"
+  in this case the variable id would be "1" we use the built-in function
+  parseInt() to convert the string "1" to the number 1.
+*/
   var id = parseInt(req.query.id);
+
+/*
+  We call res.send() as parameneter we use a call to getGallery() - and as a
+ paramenter to that function we use the variable id that came from the
+ request QueryString
+*/
   res.send(getGallery(id));
 });
 
-// Returnerer et Array af strings der indeholder de mapper der ligger under mappen "galleries"
+// Returns an Array of strings containing the folder insiden the
+// folder "galleries"
 function getGalleries() {
-  var srcpath = galleryFolder;
+  var srcpath = settings.galleryFolder;
   return fs.readdirSync(srcpath).filter(function(file) {
     return fs.statSync(path.join(srcpath, file)).isDirectory();
   });
 }
 
 function getGallery(index) {
-  var srcpath = galleryFolder + "/" + getGalleries()[index];
+  var srcpath = settings.galleryFolder + "/" + getGalleries()[index];
   return fs.readdirSync(srcpath).filter(function(file) {
     return fs.statSync(path.join(srcpath, file)).isFile();
   });
