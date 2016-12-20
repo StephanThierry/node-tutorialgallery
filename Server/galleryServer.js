@@ -45,10 +45,23 @@ var fs = require('fs');
 var path = require('path');
 
 const galleryFolder = "galleries";
-const clientFolder = "../client";
+
+/*
+ This variable contains the path to the Client files. It's possible to serve the
+ clientfiles via a different webserver but since Express does this very easily
+ it's not nessecary. However, if for some reason the Client port can't be mapped
+ to port 80 using another webserver should be used.
+
+ The starting "../" means "Go back one level" - since the server is running
+ inside the /Server folder, we need to go back one level to access "Client"
+*/
+const clientFolder = "../Client";
+
+// This line calls express.static as middleware and takes clientFolder as input
+// thereby exposing all files in the clientFolder to webrequests.
+app.use(express.static(clientFolder))
 
 app.use("/" + galleryFolder, express.static(galleryFolder))
-app.use(express.static(clientFolder))
 
 app.get("/galleryindex", function (req, res) {
     var galleryIndex = getGalleries();
