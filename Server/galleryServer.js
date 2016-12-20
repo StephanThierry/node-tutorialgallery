@@ -44,6 +44,14 @@ var fs = require('fs');
 */
 var path = require('path');
 
+/*
+ "const" is a constant it behaves the same as "var" except the value can't
+  be changed while the program is running. We may as well have used "var" but
+  using "const" we explain that the value should be set once and not be changed
+  The constant galleryFolder is used to store the name of the folder that contains
+  all galleries. Meaning in this case "Server/galleries" since the server is
+  running in the "Server" folder
+*/
 const galleryFolder = "galleries";
 
 /*
@@ -57,11 +65,25 @@ const galleryFolder = "galleries";
 */
 const clientFolder = "../Client";
 
-// This line calls express.static as middleware and takes clientFolder as input
-// thereby exposing all files in the clientFolder to webrequests.
+/*
+ This line calls express.static as Express middleware and takes clientFolder
+ as input thereby exposing all files in the clientFolder to webrequests.
+ When calling app.use() with express.static() as a parameter and no other
+ parameters, Express assumes "/" (root). So the content of clientFolder is
+ available from the root. For example. "http://localhost:3000/index.html"
+*/
 app.use(express.static(clientFolder))
 
+/*
+ Here we are making the same call to app.use() and passing express.static() as
+ a parameter. But in this case we also send in a string "/" +galleryFolder.
+ resulting in "/galleries". This means we expose the galleryFolder
+ "galleries" meaning "./Server/galleries" (since we are already inside the
+ "Server" folder). When we include the string "/galleries" the serverfolder
+ is the exposed on that serverpath meaning "http://localhost:3000/galleries"
+*/
 app.use("/" + galleryFolder, express.static(galleryFolder))
+
 
 app.get("/galleryindex", function (req, res) {
     var galleryIndex = getGalleries();
