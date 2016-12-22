@@ -1,8 +1,20 @@
 // To install dependencies use "npm install"
 // To start use "node galleryServer.js"
 
-// Express is the webserver package
-// All packages are stored in the "node_modules" folder below the current folder
+/*
+ The "require" function is used to load external modules. 
+ In this case we use the popular webserver package Express. It was originally 
+ installed using the command "npm install express --save"
+ Using the "--save" parameter when installing npm modules ensures
+ that the dependency is recorded inside the file "package.json". That
+ enables us to use the "npm install" command (with no other parameters
+ to install all dependencies in one go. 
+ A variable called express is defined and the object the package exports
+ is loaded into it. This gives us acccess to the express server via the 
+ express variable. We could have given it a different name like "webserver"
+ but we will use express since it is the most common naming convention. 
+ All packages are stored in the "node_modules" folder below the current folder.
+*/
 var express = require("express");
 
 /*
