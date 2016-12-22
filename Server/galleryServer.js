@@ -6,14 +6,20 @@
  In this case we use the popular webserver package Express. It was originally 
  installed using the command "npm install express --save"
  Using the "--save" parameter when installing npm modules ensures
- that the dependency is recorded inside the file "package.json". That
- enables us to use the "npm install" command (with no other parameters
- to install all dependencies in one go. 
+ that the dependency is saved inside the file "package.json". 
+ If a project does not have a "package.json" file one can be auto-created
+ using the "npm init" command.
+ When information about all expernal packages (modules) are saved in
+ this way it's easy to move the project from one system to another without
+ having to copy all external modjules also. This is also the reason they
+ are not included in this repo. The "npm install" command (with no other 
+ parameters) is used to recreate all required dependencies. 
+ All packages are stored in the "node_modules" folder below the current folder.
+
  A variable called express is defined and the object the package exports
  is loaded into it. This gives us acccess to the express server via the 
  express variable. We could have given it a different name like "webserver"
- but we will use express since it is the most common naming convention. 
- All packages are stored in the "node_modules" folder below the current folder.
+ but we will use express since it is the name most commonly used. 
 */
 var express = require("express");
 
