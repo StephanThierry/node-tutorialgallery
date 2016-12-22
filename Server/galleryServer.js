@@ -72,6 +72,11 @@ var path = require('path');
   be changed while the program is running. We may as well have used "var" but by
   using "const" we explain that the value should be set once and not be changed.
   The constant settings is an object that contains 2 values.
+  
+  Side-note: const should not be used in client-side javascript that is loaded in the 
+  browser since not all browsers support it. On the server side however we only 
+  have to worry about one variation of JavaScript since it will only be interpreted 
+  by the NodeJS runtime.
 
   galleryFolder is used to store the name of the folder that contains
   all galleries. Meaning in this case "Server/galleries" since the server is
