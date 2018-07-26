@@ -1,7 +1,7 @@
 # node-tutorialgallery
 Barebones NodeJS project for new NodeJS developers. A "working" app designed to offer some base functionality and a lot of room for improvement.
 
-The "utility" of the app is not important - it simply shows an ugly page with some pictures. The important part of the project is the code-comments that explain the meaning behind most of the lines.
+The faetures or look of the app is not important - it simply shows an ugly page with some pictures. The important part of the project is the code-comments that explain the meaning behind most of the lines in the NodeJS backend.
 
 ## Some of the concepts explained
 What is "require"?  
