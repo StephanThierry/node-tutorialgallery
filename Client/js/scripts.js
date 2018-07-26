@@ -27,7 +27,7 @@ function populateGalleryImages(listControlElementPrefix, id){
 	  getGalleryImages(id).done(function( data ) {
 		  $.each( data, function( index, imageFilename ) {
 				var listControlElement = $("#" + listControlElementPrefix + id);
-				listControlElement.append("<img title='"+ imageFilename +"' style='float:left' width=300 src='" + globalSettings.galleryServer + "/" + globalSettings.galleryFolder + "/" + galleryList[id] + "/" + imageFilename + "'>");
+				listControlElement.append("<img title='"+ imageFilename +"' style='float:left' width=300 src='" + globalSettings.galleryFolder + "/" + galleryList[id] + "/" + imageFilename + "'>");
 		  });
 	  });
   });
