@@ -4,13 +4,8 @@ var globalSettings = {
 	};
 
 $( document ).ready(function() {
-	var oversigtElement = $("#galleryList");
-	populateGalleryList(oversigtElement);
-
-	var galleriElement = $("#galleryShow");
-
-	// Vi henter inde 1 (som vi ved er Clipart)
-	populateGalleryImages(galleriElement, 1);
+	var galleryListElement = $("#galleryList");
+	populateGalleryList(galleryListElement);
 });
 
 function getGalleryList(){
@@ -27,11 +22,12 @@ function getGalleryImages(id){
 			);
 }
 
-function populateGalleryImages(listControlElement, id){
+function populateGalleryImages(listControlElementPrefix, id){
   getGalleryList().done(function( galleryList ) {
 	  getGalleryImages(id).done(function( data ) {
 		  $.each( data, function( index, imageFilename ) {
-			listControlElement.append("<img title='"+ imageFilename +"' style='float:left' width=300 src='/" + globalSettings.galleryFolder + "/" + galleryList[id] + "/" + imageFilename + "'>");
+				var listControlElement = $("#" + listControlElementPrefix + id);
+				listControlElement.append("<img title='"+ imageFilename +"' style='float:left' width=300 src='" + globalSettings.galleryServer + "/" + globalSettings.galleryFolder + "/" + galleryList[id] + "/" + imageFilename + "'>");
 		  });
 	  });
   });
@@ -40,9 +36,14 @@ function populateGalleryImages(listControlElement, id){
 
 
 function populateGalleryList(listControlElement){
+
+
   getGalleryList().done(function( data ) {
-	  $.each( data, function( index, galleryItem ) {
-		listControlElement.append(index + ": " + galleryItem + "<br>");
-	  });
+		for(var index=0;index<data.length;index++){
+			galleryItem = data[index];
+			//$.each( data, function( index, galleryItem ) {
+			listControlElement.append("<h1>" + galleryItem + "</h1><div id='galleryIndex"+index+"'/><div style='clear: left;'/>");
+			populateGalleryImages("galleryIndex", index);
+	  };
   });
 }
