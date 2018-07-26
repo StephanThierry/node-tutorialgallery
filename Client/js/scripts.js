@@ -39,11 +39,9 @@ function populateGalleryList(listControlElement){
 
 
   getGalleryList().done(function( data ) {
-		for(var index=0;index<data.length;index++){
-			galleryItem = data[index];
-			//$.each( data, function( index, galleryItem ) {
+		$.each( data, function( index, galleryItem ) {
 			listControlElement.append("<h1>" + galleryItem + "</h1><div id='galleryIndex"+index+"'/><div style='clear: left;'/>");
 			populateGalleryImages("galleryIndex", index);
-	  };
+	  });
   });
 }
